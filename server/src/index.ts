@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import workoutRoutes from "./routes/workouts.js";
+import exerciseRoutes from "./routes/exercises.js";
 
 const app = express();
 app.use(cors());
@@ -13,6 +14,8 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.use("/api/workouts", workoutRoutes);
+app.use("/api/exercises", exerciseRoutes);
+
 
 const port = process.env.PORT || 3001;
 
