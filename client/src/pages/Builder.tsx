@@ -67,12 +67,29 @@ function ExerciseRow({
 export default function Builder() {
   const [muscles, setMuscles] = useState<string[]>([]);
   const [rows, setRows] = useState<Row[]>([emptyRow()]);
-  const [sets, setSets] = useState<PlanSet[]>([]);
+  const [sets, setSets] = useState<PlanSet[]>(() => {
+  try {
+    const stored = localStorage.getItem("bookmarkedSets");
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+});
   const [message, setMessage] = useState("");
 
   useEffect(() => {
     axios.get<string[]>(`${API}/exercises/muscles`).then((res) => setMuscles(res.data));
   }, []);
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        "bookmarkedSets",
+        JSON.stringify(sets.filter((s) => s.bookmarked))
+      );
+    } catch {
+      // storage unavailable, ignore
+    }
+  }, [sets]);
 
   const updateRow = (i: number, row: Row) =>
     setRows((prev) => prev.map((r, idx) => (idx === i ? row : r)));
