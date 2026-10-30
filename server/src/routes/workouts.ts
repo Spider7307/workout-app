@@ -1,5 +1,6 @@
 import { Router } from "express";
 import Workout from "../models/Workout.js";
+import ScheduledWorkout from "../models/ScheduledWorkout.js";
 
 const router = Router();
 
@@ -29,6 +30,7 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   await Workout.findByIdAndDelete(req.params.id);
+  await ScheduledWorkout.deleteMany({ workoutId: req.params.id });
   res.status(204).end();
 });
 

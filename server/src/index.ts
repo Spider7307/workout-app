@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import workoutRoutes from "./routes/workouts.js";
 import exerciseRoutes from "./routes/exercises.js";
+import scheduleRoutes from "./routes/schedule.js";
 
 const app = express();
 app.use(cors());
@@ -15,7 +16,7 @@ app.get("/api/health", (_req, res) => {
 
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/exercises", exerciseRoutes);
-
+app.use("/api/schedule", scheduleRoutes);
 
 const port = process.env.PORT || 3001;
 
