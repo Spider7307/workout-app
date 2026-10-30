@@ -1,17 +1,31 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import Home from "./pages/Home";
+import Builder from "./pages/Builder";
+import Library from "./pages/Library";
+import EditWorkout from "./pages/EditWorkout";
+import Calendar from "./pages/Calendar";
+import Record from "./pages/Record";
 
 function App() {
-  const [status, setStatus] = useState("loading...");
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/health")
-      .then((res) => setStatus(res.data.ok ? "Server connected!" : "Server error"))
-      .catch(() => setStatus("Could not reach server"));
-  }, []);
-
-  return <h1>{status}</h1>;
+  return (
+    <BrowserRouter>
+      <nav style={{ display: "flex", gap: "1rem" }}>
+        <Link to="/">Home</Link>
+        <Link to="/builder">Builder</Link>
+        <Link to="/library">Library</Link>
+        <Link to="/calendar">Calendar</Link>
+        <Link to="/record">Record</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/builder" element={<Builder />} />
+        <Route path="/library" element={<Library />} />
+        <Route path="/library/:id/edit" element={<EditWorkout />} />
+        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/record" element={<Record />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
