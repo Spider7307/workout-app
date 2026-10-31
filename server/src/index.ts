@@ -6,6 +6,8 @@ import workoutRoutes from "./routes/workouts.js";
 import exerciseRoutes from "./routes/exercises.js";
 import scheduleRoutes from "./routes/schedule.js";
 import sessionRoutes from "./routes/sessions.js";
+import statsRoutes from "./routes/stats.js";
+
 
 const app = express();
 app.use(cors());
@@ -19,6 +21,7 @@ app.use("/api/workouts", workoutRoutes);
 app.use("/api/exercises", exerciseRoutes);
 app.use("/api/schedule", scheduleRoutes);
 app.use("/api/sessions", sessionRoutes);
+app.use("/api/stats", statsRoutes);
 
 const port = process.env.PORT || 3001;
 
