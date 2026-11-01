@@ -13,7 +13,7 @@ type Scheduled = {
 type Stats = {
   streak: number;
   recordedToday: boolean;
-  prs: { exerciseName: string; weight: number }[];
+  prs: { exerciseName: string; weight: number | null; reps: number | null }[];
 };
 
 export default function Home() {
@@ -80,11 +80,13 @@ export default function Home() {
 
           <section style={{ border: "1px solid gray", padding: "1rem" }}>
             <h3>Workout PRs:</h3>
-            {stats.prs.length === 0 && <p>No lifts recorded yet.</p>}
+            <p>For today's workouts</p>
+            {stats.prs.length === 0 && <p>Nothing scheduled today.</p>}
             <ul>
               {stats.prs.map((p) => (
                 <li key={p.exerciseName}>
-                  {p.exerciseName}: {p.weight} kg
+                  {p.exerciseName}:{" "}
+                  {p.weight === null ? "no record yet" : `${p.reps} reps × ${p.weight} kg`}
                 </li>
               ))}
             </ul>

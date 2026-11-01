@@ -1,5 +1,6 @@
 import { Router } from "express";
 import Session from "../models/Session.js";
+import ScheduledWorkout from "../models/ScheduledWorkout.js";
 
 const router = Router();
 
@@ -7,7 +8,7 @@ const router = Router();
 const prevDay = (key: string) =>
   new Date(new Date(`${key}T00:00:00Z`).getTime() - 86_400_000).toISOString().slice(0, 10);
 
-// GET /api/stats?today=2026-10-30
+// GET /api/stats?today=2026-10-31
 // The client sends its own local date, since the server may be in another timezone
 router.get("/", async (req, res) => {
   const today = String(req.query.today ?? "");
@@ -15,9 +16,9 @@ router.get("/", async (req, res) => {
     return res.status(400).json({ error: "today must be YYYY-MM-DD" });
   }
 
+  // Streak
   const dates = new Set<string>(await Session.distinct("date"));
   const recordedToday = dates.has(today);
-
   let cursor = recordedToday ? today : prevDay(today);
   let streak = 0;
   while (dates.has(cursor)) {
@@ -25,18 +26,41 @@ router.get("/", async (req, res) => {
     cursor = prevDay(cursor);
   }
 
-  const prs = await Session.aggregate([
-    { $unwind: "$sets" },
-    { $group: { _id: "$sets.exerciseName", weight: { $max: "$sets.weight" } } },
-    { $sort: { weight: -1 } },
-    { $limit: 5 },
-  ]);
+  // Exercises in today's scheduled workouts
+  const scheduled = await ScheduledWorkout.find({ date: today }).populate("workoutId", "exercises");
+  const names = new Set<string>();
+  for (const entry of scheduled) {
+    const workout = entry.workoutId as unknown as {
+      exercises: { exerciseName: string }[];
+    } | null; // null if the workout was deleted
+    workout?.exercises.forEach((e) => names.add(e.exerciseName));
+  }
 
-  res.json({
-    streak,
-    recordedToday,
-    prs: prs.map((p) => ({ exerciseName: p._id, weight: p.weight })),
+  // Best weight ever recorded for each of those exercises
+    // Best set ever recorded for each of those exercises:
+  // heaviest weight, and for ties, the most reps
+  const best = await Session.aggregate([
+    { $unwind: "$sets" },
+    { $match: { "sets.exerciseName": { $in: [...names] } } },
+    { $sort: { "sets.weight": -1, "sets.reps": -1 } },
+    {
+      $group: {
+        _id: "$sets.exerciseName",
+        weight: { $first: "$sets.weight" },
+        reps: { $first: "$sets.reps" },
+      },
+    },
+  ]);
+  const bestByName = new Map<string, { weight: number; reps: number }>(
+    best.map((b) => [b._id, { weight: b.weight, reps: b.reps }])
+  );
+
+  const prs = [...names].map((exerciseName) => {
+    const pr = bestByName.get(exerciseName);
+    return { exerciseName, weight: pr?.weight ?? null, reps: pr?.reps ?? null };
   });
+
+  res.json({ streak, recordedToday, prs });
 });
 
 export default router;
