@@ -5,6 +5,7 @@ import Library from "./pages/Library";
 import EditWorkout from "./pages/EditWorkout";
 import Calendar from "./pages/Calendar";
 import Record from "./pages/Record";
+import Socials from "./pages/Socials";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Link to="/library">Library</Link>
         <Link to="/calendar">Calendar</Link>
         <Link to="/record">Record</Link>
+        <Link to="/socials">Socials</Link>
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -23,6 +25,7 @@ function App() {
         <Route path="/library/:id/edit" element={<EditWorkout />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/record" element={<Record />} />
+        <Route path="/socials" element={<Socials />} />
       </Routes>
     </BrowserRouter>
   );

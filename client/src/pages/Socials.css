@@ -1,0 +1,80 @@
+@font-face {
+    font-family: DarkSouls;
+    src: url(/fonts/AGaramondPro-Bold.ttf);
+}
+
+.socials-page {
+    font-family: DarkSouls, serif;
+    color: white;
+    line-height: 1.2;
+}
+
+.socials-table {
+    /*display:grid;
+    grid-template-columns: auto auto auto;*/
+    background-color:rgba(114, 108, 108, 0.415);
+    width: 90%;
+    border:1px solid white;
+    border-collapse: separate;
+    border-spacing: clamp(10px, 2.5vw, 25px) 0px; 
+    font-weight:lighter;
+    text-align:center;
+    margin:10px auto;
+    outline: 1px solid white;
+}
+.socials-table th {
+    font-size:325%;
+    margin-bottom:0.25%;
+    margin:10px;
+    border-radius:5.6893% / 18.4615%;
+}
+.socials-table td {
+    font-size:175%;
+    margin-bottom:0.25%;
+    overflow:hidden;
+}
+.socials-table td img {
+    width:50px;
+    height:auto;
+    background-color:black;
+    background-size: 0px;
+    text-align: center;
+    border-radius:10% 10% 10% 9%;
+}
+.socials-table td.LinkIMG a img {
+    /* 1. Turn off the global solid black fill */
+    background-color: transparent; 
+    
+    /* 2. Re-create the background as a movable layer */
+    background-image: linear-gradient(black, black); 
+    
+    /* 3. Break free from the global 0px size and make it smaller than the icon */
+    background-size: 70% 70%; 
+    
+    /* 4. Shift it 40% horizontally */
+    background-position-x: 40%; 
+    background-position-y: center;
+    background-repeat: no-repeat;
+}
+
+#LinkedIn {
+    background-color: rgba(40, 103, 178);
+    margin:5px 5px 5px 5px;
+}
+#GitHub {
+    background-color:black;
+    margin:5px 5px 5px 5px;
+}
+#Instagram {
+  background: 
+    /* 1. Official Bottom-Left Glow: Made into an ellipse so it spreads wide across your 233px container without clipping vertically */
+    radial-gradient(ellipse farthest-side at 15% 100%, #feda75 0%, #fa7e1e 30%, #d62976 65%, transparent 100%),
+    /* 2. Official Top-Right Purple Flare: Dropped in from the top-right to create the dark violet signature vibe */
+    radial-gradient(circle farthest-side at 85% 0%, #962fbf 0%, #833ab4 50%, transparent 100%),
+    /* 3. Base Anchor Layer: A shallow-angled linear path that forces the royal blue to ground the bottom-right and bleed into magenta */
+    linear-gradient(115deg, #4f5bd5 0%, #4f5bd5 25%, #833ab4 45%, #d62976 70%, #fd1d1d 100%);
+}
+#Steam {
+    background: linear-gradient(135deg, #00547a 0%, #171a21 60%, #1b2838 100%);
+    margin: 5px 5px 5px 5px;
+}
