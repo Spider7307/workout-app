@@ -45,7 +45,7 @@ export default function Home() {
       <h1>Home</h1>
       {error && <p>{error}</p>}
 
-      <section>
+      <section className="card">
         <h2>
           Today's Workouts {now.getMonth() + 1}/{now.getDate()}
         </h2>
@@ -67,7 +67,7 @@ export default function Home() {
 
       {stats && (
         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-          <section style={{ border: "1px solid gray", padding: "1rem" }}>
+          <section className="card">
             <h3>{stats.streak} Day Streak! 🔥</h3>
             <p>
               {stats.streak === 0
@@ -78,7 +78,7 @@ export default function Home() {
             </p>
           </section>
 
-          <section style={{ border: "1px solid gray", padding: "1rem" }}>
+          <section className="card">
             <h3>Workout PRs:</h3>
             <p>For today's workouts</p>
             {stats.prs.length === 0 && <p>Nothing scheduled today.</p>}

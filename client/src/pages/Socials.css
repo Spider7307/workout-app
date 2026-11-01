@@ -3,6 +3,9 @@
     src: url(/fonts/AGaramondPro-Bold.ttf);
 }
 
+.contact-me {
+    font-size:150%;
+}
 .socials-page {
     font-family: DarkSouls, serif;
     color: white;
@@ -22,10 +25,12 @@
     margin:10px auto;
     outline: 1px solid white;
 }
+
 .socials-table th {
-    font-size:325%;
+    font-size:250%;
     margin-bottom:0.25%;
     margin:10px;
+    padding:10px 10px 0px 10px;
     border-radius:5.6893% / 18.4615%;
 }
 .socials-table td {

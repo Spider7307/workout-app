@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const workoutSchema = new mongoose.Schema(
   {
+    profileId: { type: mongoose.Schema.Types.ObjectId, ref: "Profile", required: true, index: true },
     name: { type: String, required: true },
     bookmarked: { type: Boolean, default: false },
     exercises: [

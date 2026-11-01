@@ -28,7 +28,7 @@ export default function ExerciseRow({
   }, [row.muscleGroup]);
 
   return (
-    <div>
+    <div className="exercise-row">
       <select
         value={row.muscleGroup}
         onChange={(e) => onChange({ muscleGroup: e.target.value, exerciseName: "" })}

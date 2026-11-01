@@ -10,7 +10,7 @@ type Workout = {
   exercises: { muscleGroup: string; exerciseName: string }[];
 };
 
-export default function Library() {
+export default function LibraryPage() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -43,11 +43,11 @@ export default function Library() {
           No workouts yet. <Link to="/builder">Build one</Link>.
         </p>
       )}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+      <div className="card-grid">
         {workouts.map((w) => {
           const groups = [...new Set(w.exercises.map((e) => e.muscleGroup.replace("_", " ")))];
           return (
-            <div key={w._id} style={{ border: "1px solid gray", padding: "1rem" }}>
+            <div key={w._id} className="card">
               <h3>{w.name}</h3>
               <p>{w.exercises.length} exercises</p>
               <p>{groups.join(", ")}</p>

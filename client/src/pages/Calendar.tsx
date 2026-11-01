@@ -111,9 +111,9 @@ export default function Calendar() {
         <button onClick={() => changeMonth(1)}>→</button>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: "4px" }}>
+      <div className="cal-grid">
         {WEEKDAYS.map((d) => (
-          <div key={d} style={{ textAlign: "center", fontSize: "0.8rem" }}>
+          <div key={d} className="cal-head">
             {d}
           </div>
         ))}
@@ -125,13 +125,9 @@ export default function Calendar() {
             <button
               key={i}
               onClick={() => setSelected(key)}
-              style={{
-                minHeight: "4.5rem",
-                textAlign: "left",
-                verticalAlign: "top",
-                border: key === selected ? "2px solid royalblue" : "1px solid gray",
-                fontWeight: key === toKey(today) ? "bold" : "normal",
-              }}
+              className={`cal-cell${key === selected ? " selected" : ""}${
+                key === toKey(today) ? " today" : ""
+              }`}
             >
               <div>{day}</div>
               {dayEntries.map((e) => (

@@ -35,7 +35,7 @@ export default function Socials() {
   return (
     <div className="socials-page">
       <table className="socials-table">
-        <caption>
+        <caption className="contact-me">
           Contact Me:
           <br />
           <a href="mailto:spencer_oldoerp@berkeley.edu">spencer_oldoerp@berkeley.edu</a>
