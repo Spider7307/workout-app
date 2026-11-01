@@ -6,7 +6,7 @@ const router = Router();
 // GET /api/sessions?from=2026-10-01&to=2026-10-31&limit=50
 router.get("/", async (req, res) => {
   const { from, to } = req.query;
-  const filter: Record<string, unknown> = {};
+  const filter: Record<string, unknown> = { profileId: res.locals.profileId };
   if (typeof from === "string" && typeof to === "string") {
     filter.date = { $gte: from, $lte: to };
   }
@@ -23,7 +23,13 @@ router.post("/", async (req, res) => {
     if (!Array.isArray(sets) || sets.length === 0) {
       return res.status(400).json({ error: "At least one set is required" });
     }
-    const session = await Session.create({ date, workoutId, workoutName, sets });
+    const session = await Session.create({
+      date,
+      workoutId,
+      workoutName,
+      sets,
+      profileId: res.locals.profileId,
+    });
     res.status(201).json(session);
   } catch {
     res.status(400).json({ error: "Invalid session" });
@@ -31,7 +37,7 @@ router.post("/", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  await Session.findByIdAndDelete(req.params.id);
+  await Session.findOneAndDelete({ _id: req.params.id, profileId: res.locals.profileId });
   res.status(204).end();
 });
 

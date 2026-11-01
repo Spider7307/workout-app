@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const sessionSchema = new mongoose.Schema(
   {
+    profileId: { type: mongoose.Schema.Types.ObjectId, ref: "Profile", required: true, index: true },
     date: { type: String, required: true, match: /^\d{4}-\d{2}-\d{2}$/ },
     // Optional link back to the library workout, plus a name snapshot so history
     // still reads correctly if the workout is later renamed or deleted

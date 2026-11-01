@@ -28,6 +28,7 @@ a {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
   gap: 0.5rem;
   padding: 1rem;
   background: rgba(0, 0, 0, 0.35);
@@ -171,4 +172,10 @@ input::placeholder {
   .cal-head {
     font-size: 0.6rem;
   }
+}
+
+.profile-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import mongoose from "mongoose";
 import Session from "../models/Session.js";
 import ScheduledWorkout from "../models/ScheduledWorkout.js";
 
@@ -16,8 +17,11 @@ router.get("/", async (req, res) => {
     return res.status(400).json({ error: "today must be YYYY-MM-DD" });
   }
 
+  // Set by the requireProfile middleware
+  const profileId = res.locals.profileId;
+
   // Streak
-  const dates = new Set<string>(await Session.distinct("date"));
+  const dates = new Set<string>(await Session.distinct("date", { profileId }));
   const recordedToday = dates.has(today);
   let cursor = recordedToday ? today : prevDay(today);
   let streak = 0;
@@ -27,7 +31,10 @@ router.get("/", async (req, res) => {
   }
 
   // Exercises in today's scheduled workouts
-  const scheduled = await ScheduledWorkout.find({ date: today }).populate("workoutId", "exercises");
+  const scheduled = await ScheduledWorkout.find({ date: today, profileId }).populate(
+    "workoutId",
+    "exercises"
+  );
   const names = new Set<string>();
   for (const entry of scheduled) {
     const workout = entry.workoutId as unknown as {
@@ -36,10 +43,11 @@ router.get("/", async (req, res) => {
     workout?.exercises.forEach((e) => names.add(e.exerciseName));
   }
 
-  // Best weight ever recorded for each of those exercises
-    // Best set ever recorded for each of those exercises:
+  // Best set ever recorded for each of those exercises:
   // heaviest weight, and for ties, the most reps
   const best = await Session.aggregate([
+    // Aggregation doesn't cast strings to ObjectIds like find() does, so convert here
+    { $match: { profileId: new mongoose.Types.ObjectId(profileId) } },
     { $unwind: "$sets" },
     { $match: { "sets.exerciseName": { $in: [...names] } } },
     { $sort: { "sets.weight": -1, "sets.reps": -1 } },
